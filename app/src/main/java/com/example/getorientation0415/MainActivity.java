@@ -7,11 +7,13 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
    // TextView txtAzimuth, txtPitch, txtRoll;
+    AzimuthView azimuthView;
     SensorManager sensorManager;
     Sensor magSensor, accSensor;
     SensorEventListener listener;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
       //  txtAzimuth = findViewById(R.id.txtAzimuth);
      //   txtPitch = findViewById(R.id.txtPitch);
      //   txtRoll = findViewById(R.id.txtRoll);
+        azimuthView = findViewById(R.id.azimuthView);
 
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
 
@@ -49,14 +52,16 @@ public class MainActivity extends AppCompatActivity {
 
                     // 2) 회전행렬로부터 방향 얻기
                     float[] values = new float[3];
-
                     SensorManager.getOrientation(R, values);
 
-                    if((int) radian2Degree(values[0]) == 180) {
-                        Toast.makeText(MainActivity.this, "180", Toast.LENGTH_SHORT);
+                /*   if((int) radian2Degree(values[0]) == 180 || values[0] == -180) {
+                        values[0] = 0;
+                      //  Toast.makeText(MainActivity.this, "180", Toast.LENGTH_SHORT);
                     } else if((int) radian2Degree(values[0]) == -180) {
                         Toast.makeText(MainActivity.this, "-180", Toast.LENGTH_SHORT);
-                    }
+                    }*/
+                    azimuthView.azimuth = (int)radian2Degree(values[0]);
+                    azimuthView.invalidate();
 
            //         txtAzimuth.setText("Azimuth: " + (int) radian2Degree(values[0]));
            //         txtPitch.setText("Pitch: " + (int) radian2Degree(values[1]));
